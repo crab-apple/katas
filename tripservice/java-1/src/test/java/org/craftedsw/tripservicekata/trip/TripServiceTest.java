@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -61,8 +60,11 @@ public class TripServiceTest {
         when(userSession.getLoggedUser()).thenReturn(loggedUser);
 
         User queriedUser = new User();
-        queriedUser.addTrip(new Trip());
-        queriedUser.addTrip(new Trip());
+        when(tripDAO.findTripsByUser(queriedUser))
+                .thenReturn(List.of(
+                        new Trip(),
+                        new Trip()
+                ));
 
         // When
         List<Trip> trips = tripService.getTripsByUser(queriedUser);
@@ -78,8 +80,11 @@ public class TripServiceTest {
         when(userSession.getLoggedUser()).thenReturn(loggedUser);
 
         User queriedUser = new User();
-        queriedUser.addTrip(new Trip());
-        queriedUser.addTrip(new Trip());
+        when(tripDAO.findTripsByUser(queriedUser))
+                .thenReturn(List.of(
+                        new Trip(),
+                        new Trip()
+                ));
 
         loggedUser.addFriend(queriedUser);
 
@@ -88,5 +93,27 @@ public class TripServiceTest {
 
         // Then
         assertTrue(trips.isEmpty());
+    }
+
+    @Test
+    void ifLoggedUserIsFriendOfQueriedUser_returnsEmptyList() {
+        // Given
+        User loggedUser = new User();
+        when(userSession.getLoggedUser()).thenReturn(loggedUser);
+
+        User queriedUser = new User();
+        when(tripDAO.findTripsByUser(queriedUser))
+                .thenReturn(List.of(
+                        new Trip(),
+                        new Trip()
+                ));
+
+        queriedUser.addFriend(loggedUser);
+
+        // When
+        List<Trip> trips = tripService.getTripsByUser(queriedUser);
+
+        // Then
+        assertEquals(2, trips.size());
     }
 }
