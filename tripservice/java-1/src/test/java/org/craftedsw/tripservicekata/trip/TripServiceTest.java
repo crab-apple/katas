@@ -17,11 +17,13 @@ public class TripServiceTest {
 
     private UserSession userSession;
     private TripService tripService;
+    private ITripDAO tripDAO;
 
     @BeforeEach
     void setup() {
         userSession = mock(UserSession.class);
-        tripService = new TripService(userSession);
+        tripDAO = mock(ITripDAO.class);
+        tripService = new TripService(userSession, tripDAO);
     }
 
     @Test
