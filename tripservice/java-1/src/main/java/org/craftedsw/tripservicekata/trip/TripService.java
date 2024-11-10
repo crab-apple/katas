@@ -9,10 +9,14 @@ import java.util.List;
 
 public class TripService {
 
-    private UserSession injectedSession;
+    private final UserSession userSession;
 
-    public void setInjectedSession(UserSession injectedSession) {
-        this.injectedSession = injectedSession;
+    public TripService() {
+        this.userSession = null;
+    }
+
+    public TripService(UserSession userSession) {
+        this.userSession = userSession;
     }
 
     public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
@@ -36,8 +40,8 @@ public class TripService {
     }
 
     private UserSession getUserSession() {
-        if (injectedSession != null) {
-            return injectedSession;
+        if (userSession != null) {
+            return userSession;
         }
         return UserSession.getInstance();
     }

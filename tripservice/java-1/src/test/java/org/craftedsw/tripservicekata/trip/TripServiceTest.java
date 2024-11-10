@@ -32,8 +32,7 @@ public class TripServiceTest {
         // Given
         UserSession userSession = mock(UserSession.class);
         when(userSession.getLoggedUser()).thenReturn(null);
-        TripService tripService = new TripService();
-        tripService.setInjectedSession(userSession);
+        TripService tripService = new TripService(userSession);
 
         // Then
         assertThrows(
