@@ -53,12 +53,14 @@ public class TripServiceTest {
     }
 
     @Test
-    void ifUserIsNotFriendOfLoggedUser_returnsEmptyList() {
+    void ifThereIsNoFriendship_returnsEmptyList() {
         // Given
         User loggedUser = new User();
+        when(userSession.getLoggedUser()).thenReturn(loggedUser);
+
         User queriedUser = new User();
         queriedUser.addTrip(new Trip());
-        when(userSession.getLoggedUser()).thenReturn(loggedUser);
+        queriedUser.addTrip(new Trip());
 
         // When
         List<Trip> trips = tripService.getTripsByUser(queriedUser);
@@ -67,4 +69,22 @@ public class TripServiceTest {
         assertTrue(trips.isEmpty());
     }
 
+    @Test
+    void ifQueriedUserIsFriendOfLoggedUser_returnsEmptyList() {
+        // Given
+        User loggedUser = new User();
+        when(userSession.getLoggedUser()).thenReturn(loggedUser);
+
+        User queriedUser = new User();
+        queriedUser.addTrip(new Trip());
+        queriedUser.addTrip(new Trip());
+
+        loggedUser.addFriend(queriedUser);
+
+        // When
+        List<Trip> trips = tripService.getTripsByUser(queriedUser);
+
+        // Then
+        assertTrue(trips.isEmpty());
+    }
 }
