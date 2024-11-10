@@ -12,6 +12,21 @@ import static org.mockito.Mockito.when;
 public class TripServiceTest {
 
     @Test
+    void hasNoArgumentsConstructor() {
+        new TripService();
+    }
+
+    @Test
+    void getTripsByUserSignature() {
+        // Just checking that it compiles
+        try {
+            new TripService().getTripsByUser(null);
+        } catch (Exception ex) {
+
+        }
+    }
+
+    @Test
     void ifNotLoggedIn_throwsNotLoggedInException() {
 
         // Given
